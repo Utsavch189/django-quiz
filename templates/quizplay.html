@@ -1,0 +1,39 @@
+{% extends 'base.html' %} {% block title %} Quiz {% endblock title %}
+
+{% block body %}
+
+<div class="p-4">
+    <center>
+        <h3 class="font-bold text-2xl" id="heading"></h3>
+    </center>
+    <div class="my-4" id="main-area">
+        
+    </div>
+    <div id="result-area" class="hidden">
+        <div class="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md mt-10">
+            <h1 class="text-4xl font-bold text-center text-gray-800">Quiz Results</h1>
+            <div class="mt-8 text-center">
+                <p class="text-2xl text-gray-700">Congratulations {{request.user.first_name}} {{request.user.last_name}}!</p>
+                <p class="text-lg text-gray-600">You have completed the quiz.</p>
+                <div class="mt-6">
+                    <p class="text-5xl font-semibold text-gray-800">Score: <span id="score" class="text-indigo-600"></span> / 14</p>
+                    <p class="text-3xl text-gray-700 mt-2">Percentage: <span id="percentage" class="text-indigo-600"></span></p>
+                    <p class="text-3xl text-gray-700 mt-2">You Get : <span id="points" class="text-indigo-600"></span></p>
+                    <p class="text-3xl text-gray-700 mt-2">You Get : <span id="threshold" class="text-indigo-600"></span></p>
+                </div>
+            </div>
+            <div class="mt-8">
+                <h2 class="text-2xl font-semibold text-gray-800">Correct Answers:</h2>
+                <ul class="list-disc list-inside text-lg text-gray-700 mt-4" id="answer-area">
+                    
+                </ul>
+            </div>
+            <div class="mt-8 text-center">
+                <a href="/" class="inline-block bg-indigo-600 text-white text-lg font-semibold py-2 px-4 rounded-lg shadow hover:bg-indigo-500">Take Another Quiz</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/static/quiz.js"></script>
+
+{% endblock body %}
