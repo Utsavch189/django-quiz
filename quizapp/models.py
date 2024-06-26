@@ -45,7 +45,6 @@ class Result(models.Model):
 
 class Point(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE,related_name='point_user')
-    quiz=models.ForeignKey(Quiz,on_delete=models.CASCADE,related_name='point_quiz')
     points=models.IntegerField(default=0)
     created_at=models.DateTimeField(default=datetime.now())
 

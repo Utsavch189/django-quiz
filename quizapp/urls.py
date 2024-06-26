@@ -1,6 +1,6 @@
 from .views import home,profile,logins,logout_user,register,quizplay,rankboard
 from django.urls import path
-from .api import QuizQuestions,Milestone
+from .api import QuizQuestions,Milestone,TopPointGetterApi
 
 
 urlpatterns = [
@@ -13,4 +13,6 @@ urlpatterns = [
     path('quiz-play/<int:id>/<str:username>',quizplay,name='quizplay'),
     path('api/questions/<int:id>/<str:username>', QuizQuestions.as_view()),
     path('api/milestone/<str:username>', Milestone.as_view()),
+    path('api/rank-board/page=<str:page>&page-size=<str:page_size>', TopPointGetterApi.as_view()),
+
 ]

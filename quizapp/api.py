@@ -5,6 +5,7 @@ from .models import Quiz,Result,Point,MileStone
 from quizapp.serializer.quiz import QuizWithQuestionSerializer
 from django.contrib.auth.models import User
 from django.db import transaction
+from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 
 class QuizQuestions(APIView):
 
@@ -49,17 +50,16 @@ class QuizQuestions(APIView):
 
                 if percentage>=data.get('performance_threshold'):
                     if not Point.objects.filter(user=user).exists():
-                        Point.objects.create(
+                        point=Point(
                             user=user,
-                            quiz=quiz,
                             points=data.get('gain_points')
                         )
+                        point.save()
                     else:
                         point=Point.objects.get(id=Point.objects.filter(user=user)[0].id)
-                        point.points=data.get('gain_points')
+                        point.points=int(data.get('gain_points'))+int(point.points)
                         point.save()
                         
-
                 Result.objects.create(
                     user=user,
                     quiz=quiz,
@@ -84,5 +84,31 @@ class Milestone(APIView):
             user=User.objects.get(username=username)
             total_point=Point.objects.filter(user=user)[0].points
             return Response({"milestone":data,"points":total_point},status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"message":str(e)},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class TopPointGetterApi(APIView):
+
+    def get(self,request,page,page_size):
+        try:
+            points=Point.objects.all().order_by('-points').values()
+            total_data=len(points)
+            paginator=Paginator(points,page_size)
+            try:
+                data=paginator.page(page)
+            except PageNotAnInteger:
+                data=paginator.page(1)
+            except EmptyPage:
+                data=[]
+
+            point_ranks=[]
+
+            for d in data:
+                user=User.objects.get(pk=d.get('user_id'))
+                point_ranks.append(
+                    {"name":user.first_name+" "+user.last_name,"points":d.get("points")}
+                )
+
+            return Response({"rankings":point_ranks,"total_records":total_data},status=status.HTTP_200_OK)
         except Exception as e:
             return Response({"message":str(e)},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
