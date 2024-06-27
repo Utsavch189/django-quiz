@@ -80,7 +80,6 @@ class Milestone(APIView):
                 data.append(
                     {"name":f"{m.name} ({m.required_points})","points":m.required_points}
                 )
-            print(username)
             user=User.objects.get(username=username)
             total_point=Point.objects.filter(user=user)[0].points
             return Response({"milestone":data,"points":total_point},status=status.HTTP_200_OK)
@@ -106,7 +105,7 @@ class TopPointGetterApi(APIView):
             for d in data:
                 user=User.objects.get(pk=d.get('user_id'))
                 point_ranks.append(
-                    {"name":user.first_name+" "+user.last_name,"points":d.get("points")}
+                    {"id":user.id,"name":user.first_name+" "+user.last_name,"points":d.get("points")}
                 )
 
             return Response({"rankings":point_ranks,"total_records":total_data},status=status.HTTP_200_OK)
