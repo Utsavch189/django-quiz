@@ -2,8 +2,21 @@
 
 {% block body %}
 
+{% if not eligible %}
+
+<div class="max-w-screen-xl mx-auto p-6">
+    <div class="bg-white shadow-md rounded-lg p-6 text-center">
+      <h1 class="text-2xl font-bold mb-4 text-red-600">Quiz Already Attempted</h1>
+      <p class="text-gray-700 mb-6">You have already attempted this quiz. You can review your results or try another quiz.</p>
+      <a href="/profile/{{request.user.username}}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">Go to Profile</a>
+      <a href="/rank-board" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700 ml-2">View Rankboard</a>
+    </div>
+  </div>
+
+{% else %}
+
 <div class="p-4">
-    <center>
+    <center id="head-area">
         <h3 class="font-bold text-2xl" id="heading"></h3>
     </center>
     <div class="my-4" id="main-area">
@@ -35,5 +48,5 @@
     </div>
 </div>
 <script src="/static/quiz.js"></script>
-
+{% endif %}
 {% endblock body %}

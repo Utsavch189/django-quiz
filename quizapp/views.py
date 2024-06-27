@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.models import User
 from quizapp.serializer.quiz import QuizSerializer
-from .models import Quiz
+from .models import Quiz,Result
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout, authenticate
@@ -115,15 +115,26 @@ def profile(request,id):
         return render(request,'profile.html',context=context)
 
 @login_required(login_url='login')
-def quizplay(request,id,username):  
+def quizplay(request,id,username): 
+
+    context={
+        "id":id,
+        "eligible":True
+    } 
 
     if not Quiz.objects.filter(id=id).exists():
             return redirect("home")
     
     if not User.objects.filter(username=username).exists():
         return redirect("home")
+    
+    if Result.objects.filter(user=User.objects.get(username=username)).exists():
+        context={
+        "id":id,
+        "eligible":False
+    } 
 
-    return render(request,'quizplay.html',context={"id":id})
+    return render(request,'quizplay.html',context=context)
 
 @login_required(login_url='login')
 def rankboard(request):  

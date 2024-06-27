@@ -1,12 +1,3 @@
-// Sample data from the database
-const data = [
-    {name:'start',points:0},
-    { name: 'Invitation received', points: 100 },
-    { name: 'Personal details', points: 250 },
-    { name: 'Application details', points: 400 },
-    { name: 'Confirmation', points: 500 }
-];
-
 const username=window.location.pathname.split("/")[2];
 
 window.addEventListener("DOMContentLoaded",(e)=>{

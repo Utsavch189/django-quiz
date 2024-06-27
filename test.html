@@ -1,114 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic Progress Bar</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <style>
-        .progress-step {
-            width: 100%;
-        }
-        .progress-bar {
-            transition: width 0.3s ease;
-        }
-        .completed-step {
-            background-color: #48bb78; /* Green */
-        }
-        .upcoming-step {
-            border-color: #cbd5e0; /* Light Gray */
-        }
-        .completed-bar {
-            background-color: #68d391; /* Light Green */
-        }
-        .upcoming-bar {
-            background-color: #e2e8f0; /* Gray */
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz Already Attempted</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-100 flex items-center justify-center h-screen">
-    <div class="max-w-xl mx-auto my-4 border-b-2 pb-4">
-        <div class="flex pb-3" id="progress-steps">
-            <!-- Progress steps will be dynamically inserted here -->
-        </div>
-        <div class="flex text-xs content-center text-center" id="progress-labels">
-            <!-- Progress labels will be dynamically inserted here -->
-        </div>
+<body class="bg-gray-100 text-gray-800">
+
+  <!-- Header -->
+  <nav class="bg-white border-gray-200 dark:bg-gray-900">
+    <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+      <button data-collapse-toggle="navbar-default" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-default" aria-expanded="false">
+        <span class="sr-only">Open main menu</span>
+        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
+        </svg>
+      </button>
+      <div class="hidden w-full md:block md:w-auto" id="navbar-default">
+        <ul class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+          <li>
+            <a href="/" class="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500" aria-current="page">Home</a>
+          </li>
+          <li>
+            <a href="/profile" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Profile</a>
+          </li>
+          <li>
+            <a href="/rank-board" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Rankboard</a>
+          </li>
+          <li>
+            <a href="/logout" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Logout</a>
+          </li>
+        </ul>
+      </div>
     </div>
+  </nav>
 
-    <script>
-        // Sample data from the database
-        const data = [
-            { name: 'Invitation received', points: 100 },
-            { name: 'Personal details', points: 250 },
-            { name: 'Application details', points: 500 },
-            { name: 'Confirmation', points: 1000 }
-        ];
+  <!-- Main Content -->
+  <div class="max-w-screen-xl mx-auto p-6">
+    <div class="bg-white shadow-md rounded-lg p-6 text-center">
+      <h1 class="text-2xl font-bold mb-4 text-red-600">Quiz Already Attempted</h1>
+      <p class="text-gray-700 mb-6">You have already attempted this quiz. You can review your results or try another quiz.</p>
+      <a href="/profile" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">Go to Profile</a>
+      <a href="/rank-board" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700 ml-2">View Rankboard</a>
+    </div>
+  </div>
 
-        // Function to generate the progress bar
-        function generateProgressBar(data, currentPoints) {
-            const progressSteps = document.getElementById('progress-steps');
-            const progressLabels = document.getElementById('progress-labels');
-
-            // Clear existing content
-            progressSteps.innerHTML = '';
-            progressLabels.innerHTML = '';
-
-            let accumulatedPoints = 0;
-            data.forEach((level, index) => {
-                accumulatedPoints += level.points;
-                const isCompleted = currentPoints >= accumulatedPoints;
-
-                // Create progress step
-                const stepDiv = document.createElement('div');
-                stepDiv.classList.add('flex-1');
-
-                const stepCircle = document.createElement('div');
-                stepCircle.classList.add('w-10', 'h-10', 'mx-auto', 'rounded-full', 'text-lg', 'flex', 'items-center', 'justify-center');
-                stepCircle.classList.add(isCompleted ? 'completed-step' : 'bg-white', isCompleted ? 'text-white' : 'upcoming-step', 'border-2');
-
-                const stepIcon = document.createElement('span');
-                stepIcon.classList.add('text-center', 'w-full');
-                if (isCompleted) {
-                    stepIcon.innerHTML = '<i class="fa fa-check"></i>';
-                } else {
-                    stepIcon.textContent = index + 1;
-                    stepIcon.classList.add('text-grey-darker');
-                }
-
-                stepCircle.appendChild(stepIcon);
-                stepDiv.appendChild(stepCircle);
-                progressSteps.appendChild(stepDiv);
-
-                // Create progress bar
-                if (index < data.length - 1) {
-                    const barContainer = document.createElement('div');
-                    barContainer.classList.add('w-1/6', 'align-center', 'items-center', 'align-middle', 'content-center', 'flex');
-
-                    const barWrapper = document.createElement('div');
-                    barWrapper.classList.add('w-full', 'rounded', 'items-center', 'align-middle', 'align-center', 'flex-1', 'bg-grey-light');
-
-                    const progressBar = document.createElement('div');
-                    progressBar.classList.add('progress-bar', 'text-xs', 'leading-none', 'py-1', 'text-center', 'text-grey-darkest', 'rounded');
-                    progressBar.classList.add(isCompleted ? 'completed-bar' : 'upcoming-bar');
-                    progressBar.style.width = isCompleted ? '100%' : `${(currentPoints / accumulatedPoints) * 100}%`;
-
-                    barWrapper.appendChild(progressBar);
-                    barContainer.appendChild(barWrapper);
-                    progressSteps.appendChild(barContainer);
-                }
-
-                // Create progress label
-                const labelDiv = document.createElement('div');
-                labelDiv.classList.add('w-1/4');
-                labelDiv.textContent = level.name;
-                progressLabels.appendChild(labelDiv);
-            });
-        }
-
-        // Example usage: generating the progress bar with current points
-        generateProgressBar(data, 150); // You can change 600 to any other points value to test
-    </script>
 </body>
 </html>

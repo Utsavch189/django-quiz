@@ -139,7 +139,8 @@ function getCookie(name) {
     return cookieValue;
 }
 
-function handle_submit() {
+function handle_submit(e) {
+    e.preventDefault();
     const csrftoken = getCookie('csrftoken');
     fetch(`/api/questions/${quiz_id}/${user_id}`, {
         method: "POST",
@@ -153,6 +154,7 @@ function handle_submit() {
         .then(data => {
             main_area.classList.add('hidden');
             result_area.classList.remove('hidden');
+            document.getElementById('head-area').classList.add('hidden');
             document.getElementById('score').innerText = data?.marks || 0;
             document.getElementById('points').innerText = data?.gain_points && data?.gain_points + ' points' || 0 + ' points';
             document.getElementById('percentage').innerText = data?.percentage?.toFixed(2) && data?.percentage?.toFixed(2) + '%' || 0.0 + '%';
