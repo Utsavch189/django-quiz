@@ -81,6 +81,8 @@ class Milestone(APIView):
                     {"name":f"{m.name} ({m.required_points})","points":m.required_points}
                 )
             user=User.objects.get(username=username)
+            if not Point.objects.filter(user=user).exists():
+                return Response({"milestone":data,"points":0},status=status.HTTP_200_OK)
             total_point=Point.objects.filter(user=user)[0].points
             return Response({"milestone":data,"points":total_point},status=status.HTTP_200_OK)
         except Exception as e:
