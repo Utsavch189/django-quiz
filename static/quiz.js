@@ -139,8 +139,7 @@ function getCookie(name) {
     return cookieValue;
 }
 
-function handle_submit(e) {
-    e.preventDefault();
+function handle_submit() {
     const csrftoken = getCookie('csrftoken');
     fetch(`/api/questions/${quiz_id}/${user_id}`, {
         method: "POST",
